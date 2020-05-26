@@ -1,6 +1,13 @@
-require "is_docker/version"
+# frozen_string_literal: true
+
+require 'is_docker/version'
 
 module IsDocker
-  class Error < StandardError; end
-  # Your code goes here...
+  def self.docker?
+    begin
+      !File.readlines('/proc/self/cgroup').grep(/docker/).empty?
+    rescue Errno::ENOENT
+      false
+    end
+  end
 end
